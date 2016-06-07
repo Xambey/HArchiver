@@ -1,5 +1,5 @@
-# HArchiver
-Archiver: method of Haffman
+# C++/ CLI HArchiver
+Archiver: method of Huffman
 
 HArchiver is a program-archiver and it's open source project
 With the technology it uses ++ / CLI
