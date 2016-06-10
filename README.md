@@ -9,11 +9,8 @@ skype = Xambey97
 VK = https://vk.com/xambey
 
 Version 0.8
-
 -changed colors
 -add auto insert format files
 -update section about program
-
-
 
 ![alt tag](https://pp.vk.me/c630027/v630027157/31a9e/Xr09YBzI1ZA.jpg) 
