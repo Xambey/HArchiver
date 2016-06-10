@@ -60,10 +60,10 @@ namespace HArchiver {
 			// 
 			this->label1->Font = (gcnew System::Drawing::Font(L"Times New Roman", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label1->Location = System::Drawing::Point(12, 9);
+			this->label1->Location = System::Drawing::Point(1, 9);
 			this->label1->MaximumSize = System::Drawing::Size(500, 525);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(432, 131);
+			this->label1->Size = System::Drawing::Size(422, 201);
 			this->label1->TabIndex = 0;
 			this->label1->Text = resources->GetString(L"label1.Text");
 			this->label1->UseWaitCursor = true;
@@ -76,7 +76,7 @@ namespace HArchiver {
 			this->AutoSize = true;
 			this->BackColor = System::Drawing::SystemColors::Info;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
-			this->ClientSize = System::Drawing::Size(435, 131);
+			this->ClientSize = System::Drawing::Size(435, 207);
 			this->Controls->Add(this->label1);
 			this->Font = (gcnew System::Drawing::Font(L"Microsoft PhagsPa", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204), true));

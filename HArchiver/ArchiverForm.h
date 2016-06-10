@@ -1,5 +1,5 @@
 #pragma once
-#include "Archiver.h"
+#include "HArchiver.h"
 #include "AboutProgram.h"
 #include <string>
 namespace HArchiver {
@@ -96,46 +96,50 @@ namespace HArchiver {
 			// 
 			// button1
 			// 
+			this->button1->BackColor = System::Drawing::SystemColors::Info;
 			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button1->Location = System::Drawing::Point(361, 61);
+			this->button1->Location = System::Drawing::Point(361, 48);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(72, 38);
 			this->button1->TabIndex = 1;
 			this->button1->Text = L"îáçîð";
-			this->button1->UseVisualStyleBackColor = true;
+			this->button1->UseVisualStyleBackColor = false;
 			this->button1->Click += gcnew System::EventHandler(this, &ArchiverForm::button1_Click);
 			// 
 			// button2
 			// 
+			this->button2->BackColor = System::Drawing::SystemColors::Info;
 			this->button2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button2->Location = System::Drawing::Point(361, 109);
+			this->button2->Location = System::Drawing::Point(361, 96);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(72, 38);
 			this->button2->TabIndex = 3;
 			this->button2->Text = L"îáçîð";
-			this->button2->UseVisualStyleBackColor = true;
+			this->button2->UseVisualStyleBackColor = false;
 			this->button2->Click += gcnew System::EventHandler(this, &ArchiverForm::button2_Click);
 			// 
 			// button3
 			// 
+			this->button3->BackColor = System::Drawing::SystemColors::Info;
 			this->button3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button3->Location = System::Drawing::Point(439, 61);
+			this->button3->Location = System::Drawing::Point(439, 48);
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(156, 38);
 			this->button3->TabIndex = 4;
 			this->button3->Text = L"Àðõèâèðîâàòü";
-			this->button3->UseVisualStyleBackColor = true;
+			this->button3->UseVisualStyleBackColor = false;
 			this->button3->Click += gcnew System::EventHandler(this, &ArchiverForm::button3_Click);
 			// 
 			// button4
 			// 
+			this->button4->BackColor = System::Drawing::SystemColors::Info;
 			this->button4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button4->Location = System::Drawing::Point(439, 109);
+			this->button4->Location = System::Drawing::Point(439, 96);
 			this->button4->Name = L"button4";
 			this->button4->Size = System::Drawing::Size(156, 38);
 			this->button4->TabIndex = 5;
 			this->button4->Text = L"Èçâëå÷ü";
-			this->button4->UseVisualStyleBackColor = true;
+			this->button4->UseVisualStyleBackColor = false;
 			this->button4->Click += gcnew System::EventHandler(this, &ArchiverForm::button4_Click);
 			// 
 			// openFileDialog1
@@ -145,14 +149,14 @@ namespace HArchiver {
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(8, 67);
+			this->textBox1->Location = System::Drawing::Point(8, 54);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(347, 26);
 			this->textBox1->TabIndex = 6;
 			// 
 			// textBox2
 			// 
-			this->textBox2->Location = System::Drawing::Point(8, 115);
+			this->textBox2->Location = System::Drawing::Point(8, 102);
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->Size = System::Drawing::Size(347, 26);
 			this->textBox2->TabIndex = 7;
@@ -210,6 +214,7 @@ namespace HArchiver {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"ArchiverForm";
+			this->RightToLeft = System::Windows::Forms::RightToLeft::No;
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Harchiver";
 			this->menuStrip1->ResumeLayout(false);
@@ -220,88 +225,110 @@ namespace HArchiver {
 		}
 #pragma endregion
 
-private: System::Void openFileDialog1_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
-	textBox1->Text = openFileDialog1->FileName;
-	std::string s(""), res("");
-	Archiver need;
-	need.MarshalString(textBox1->Text, s);
-	bool f = false;
-	for (int i = s.length() - 1; i >= 0; i--) {
-		if (s[i] != '.'&& !f) continue;
-		else
-			f = true;
 
-		if (f && s[i] == '\\') {
-			break;
+	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+		openFileDialog1->ShowDialog();
+	}
+
+	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+		openFileDialog2->ShowDialog();
+	}
+
+	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (textBox1->Text != "" && textBox1->Text != "Ôàéë íå âûáðàí!") {
+			saveFileDialog1->ShowDialog();
 		}
-		else
-			res += s[i];
+		else textBox1->Text = "Ôàéë íå âûáðàí!";
 	}
-	std::string inv;
-	for (int i = res.length() - 1; i >= 0; i--) {
-		inv += res[i];
+	private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (textBox2->Text != "" && textBox2->Text != "Ôàéë íå âûáðàí!")
+			saveFileDialog2->ShowDialog();
+		else textBox2->Text = "Ôàéë íå âûáðàí!";
 	}
-	inv += "ha";
-	String^ final = gcnew String(inv.c_str());
+	private: System::Void saveFileDialog1_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
+		Archiver ar;
+		ar.Archive(textBox1->Text, saveFileDialog1->FileName);
+	}
+	private: System::Void saveFileDialog2_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
 
-	saveFileDialog1->FileName = final;
-}
-private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-	openFileDialog1->ShowDialog();
-}
+		Archiver ar;
+		ar.UnArchive(textBox2->Text, saveFileDialog2->FileName);
+	}
+	private: System::Void openFileDialog1_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
+		textBox1->Text = openFileDialog1->FileName;
+		std::string s(""), res("");
+		Archiver need;
+		need.MarshalString(textBox1->Text, s);
+		bool f = false;
+		for (int i = s.length() - 1; i >= 0; i--) {
+			if (s[i] != '.'&& !f) continue;
+			else
+				f = true;
 
-private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-	openFileDialog2->ShowDialog();
-}
-private: System::Void openFileDialog2_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
-	textBox2->Text = openFileDialog2->FileName;
-	std::string s(""), res("");
-	Archiver need;
-	need.MarshalString(textBox2->Text, s);
-	bool f = false;
-	for (int i = s.length() - 1; i >= 0; i--) {
-		if (s[i] != '.'&& !f) continue;
-		else
-			f = true;
-
-		if (f && s[i] == '\\') {
-			break;
+			if (f && s[i] == '\\') {
+				break;
+			}
+			else
+				res += s[i];
 		}
-		else
-			res += s[i];
-	}
-	std::string inv;
-	for (int i = res.length() - 1; i >= 0; i--) {
-		inv += res[i];
-	}
-	//inv += "ha";
-	String^ final = gcnew String(inv.c_str());
+		std::string inv;
+		for (int i = res.length() - 1; i >= 0; i--) {
+			inv += res[i];
+		}
+		inv += "ha";
+		String^ final = gcnew String(inv.c_str());
 
-	saveFileDialog2->FileName = final;
-}
-private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-	if (textBox1->Text != "" && textBox1->Text != "Ôàéë íå âûáðàí!") {
-		saveFileDialog1->ShowDialog();
+		saveFileDialog1->FileName = final;
 	}
-	else textBox1->Text = "Ôàéë íå âûáðàí!";
-}
-private: System::Void saveFileDialog1_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
-	Archiver ar;
-	ar.Archive(textBox1->Text, saveFileDialog1->FileName);
-}
-private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
-	if (textBox2->Text != "" && textBox2->Text != "Ôàéë íå âûáðàí!")
-		saveFileDialog2->ShowDialog();
-	else textBox2->Text = "Ôàéë íå âûáðàí!";
-}
-private: System::Void saveFileDialog2_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
-	
-	Archiver ar;
-	ar.UnArchive(textBox2->Text, saveFileDialog2->FileName);
-}
-private: System::Void îÏðîãðàììåToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-	AboutProgram^ about = gcnew AboutProgram();
-	about->Show();
-}
-};
+	private: System::Void openFileDialog2_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
+		textBox2->Text = openFileDialog2->FileName;
+		std::string s, res;
+
+		Archiver need;
+		need.MarshalString(textBox2->Text, s);
+
+		ifstream in(s, ios_base::binary);
+		if (!in.is_open())
+			throw "File not found";
+
+		bool f = false;
+		for (int i = s.length() - 1; i >= 0; i--) {
+			if (s[i] != '.'&& !f) continue;
+			else
+				f = true;
+
+			if (f && s[i] == '\\') {
+				break;
+			}
+			else
+				res += s[i];
+		}
+		std::string inv;
+		for (int i = res.length() - 1; i >= 0; i--) {
+			inv += res[i];
+		}
+		inv.pop_back();
+		string format;
+		string filename;
+		filename += "Harchiver files(*.";
+		char l;
+		in.read(&l , 1);
+		int v = (int)l;
+		for (int i = 0; i < v; i++) {
+			in.read(&l, 1);
+			format.push_back(l);
+		}
+		in.close();
+		filename += format + ") | *." + format;;
+		String^ k = gcnew String(filename.c_str());
+		String^ final = gcnew String(inv.c_str());
+
+		saveFileDialog2->FileName = final;
+		saveFileDialog2->Filter = k;
+	}
+	private: System::Void îÏðîãðàììåToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+		AboutProgram^ about = gcnew AboutProgram();
+		about->Show();
+	}
+	};
 }

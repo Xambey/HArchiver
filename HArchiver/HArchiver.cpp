@@ -1,4 +1,4 @@
-#include "Archiver.h"
+#include "HArchiver.h"
 
 typedef unsigned char byte;
 
@@ -6,8 +6,16 @@ typedef unsigned char byte;
 void Archiver::Archive(System::String^ input, System::String^ output)
 {
 	try {
-		string inp;
-		MarshalString(input, inp);
+		string inp, format;
+		
+		MarshalString(input, inp); //String to string transform
+
+		//write format file
+		for (auto it = inp.rbegin(); it != inp.rend(); it++) {
+			if (*it == '.')
+				break;
+			format += *it;
+		}
 		ifstream in(inp, ios_base::binary);
 		if (!in.is_open())
 			throw "File not found";
@@ -20,7 +28,9 @@ void Archiver::Archive(System::String^ input, System::String^ output)
 		in.read(DataFile, size);
 		in.close();
 
-		buf = gcnew cli::array<Code^ >(256);
+		buf = gcnew List<Code^ >(256);
+		for (size_t i = 0; i < 256; i++)
+			buf->Add(gcnew Code);
 		CreateTree(DataFile, size);
 
 		char* EncryptDate = new char[size];
@@ -48,15 +58,28 @@ void Archiver::Archive(System::String^ input, System::String^ output)
 		MarshalString(output, ou);
 		ofstream out(ou, ios_base::binary);
 
+		//write format
+		int len = format.length();
+		char s = (char) len;
+
+		out.write(&s, 1);
+		for (auto it = format.rbegin(); it != format.rend(); it++)
+		{
+			out.write(&(*it), 1);
+		}
+		
+		//write buf
 		for (size_t i = 0; i < 256; i++)
 		{
-			char u = buf[i]->size;
-			short v = buf[i]->value;
-			out.write(&u, 1);
-			if (u)
-				out.write((char*)&v, sizeof(Code::value));
+			if (buf[i] != nullptr) {
+				char u = buf[i]->size;
+				short v = buf[i]->value;
+				out.write(&u, 1);
+				if (u)
+					out.write((char*)&v, sizeof(Code::value));
+			}
 		}
-
+		//write encrypt data
 		out.write(&offest, 1);
 		out.write(EncryptDate, j + 1);
 		//delete[] EncryptDate;
@@ -116,8 +139,7 @@ void Archiver::CreateTree(char * data, long size)
 	for (size_t i = 0; i < 256; i++)
 	{
 		if (count_buffer[(byte)i]) {
-			Item^t = gcnew Item((byte)i, count_buffer[(byte)i]);
-			ls->Add(t);
+			ls->Add(gcnew Item((byte)i, count_buffer[(byte)i]));
 			//ls.push_back(gcnew Item((byte)i, count_buffer[(byte)i]));
 		}
 	}
@@ -131,7 +153,7 @@ void Archiver::CreateTree(char * data, long size)
 					long t = ls[j]->count;
 					ls[j]->count = ls[j + 1]->count;
 					ls[j + 1]->count = t;
-					//swap(ls.at(j), ls.at(j + 1));
+					//swap(ls[j], ls[j + 1]);
 				}
 			}
 		}
@@ -150,7 +172,6 @@ void Archiver::CreateTree(char * data, long size)
 		//ls2[len] = tr;
 		//ls = ls2;
 	}
-
 	ls[0]->collapse(gcnew Code(),buf);
 }
 
@@ -167,13 +188,19 @@ void Archiver::UnArchive(System::String^ input, System::String^ output)
 	if (!in.is_open())
 		throw "File not found";
 
-	buf = gcnew cli::array<Code^ >(256);
+	buf = gcnew List<Code^ >(256);
+	char si;
+	in.read(&si, 1);
+	int siInt = (int)si;
+	for (int i = 0; i < siInt; i++) {
+		in.read(&si, 1);
+	}
 	for (size_t i = 0; i < 256; i++)
 	{
+		buf->Add(gcnew Code);
 		char t;
 		short v;
 		in.read(&t, 1);
-		buf[i] = gcnew Code;
 		buf[i]->size = t;
 		if (t) {
 			in.read((char*)&v, sizeof(Code::value));
@@ -243,7 +270,7 @@ Archiver::Item::~Item()
 		delete right;
 }
 
-void Archiver::Item::collapse(Archiver::Code^ code, cli::array<Code^>^bu)
+void Archiver::Item::collapse(Archiver::Code^ code, List<Code^>^bu)
 {
 	if (left && right)
 	{

@@ -134,18 +134,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AboutProgram.cpp" />
-    <ClCompile Include="Archiver.cpp" />
-    <ClCompile Include="ArchiverForm.cpp" />
+    <ClCompile Include="HArchiver.cpp" />
+    <ClCompile Include="HArchiverForm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutProgram.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="HArchiver.h" />
     <ClInclude Include="ArchiverForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AboutProgram.resx">
+      <DependentUpon>AboutProgram.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ArchiverForm.resx">
       <DependentUpon>ArchiverForm.h</DependentUpon>
     </EmbeddedResource>
